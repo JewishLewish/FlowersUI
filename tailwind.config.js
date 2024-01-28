@@ -9,25 +9,18 @@ module.exports = {
   },
   plugins: [
     // Use the 'plugin' utility to define a custom plugin
-    plugin(({ addUtilities, addComponents, e, config }) => {
-      // Define the custom utility class for highlighting text
-      const highlightUtilities = {
-        '.highlight-text': {
-          color: '#ff9900', // Set the text color to a custom highlight color
-          fontWeight: 'bold', // Set the text to bold
-        },
-      };
+    plugin(({ addUtilities }) => {
+      // Define the custom utility classes for duplicating and blurring "cloud" items with dynamic blur values
+      const cloudUtilities = {};
 
-      // Add the custom utility class for highlighting text to the generated CSS
-      addUtilities(highlightUtilities, ['responsive', 'hover']);
-
-      // Define the custom utility class for duplicating and blurring "cloud" items
-      const cloudUtilities = {
-        '.cloud': {
+      // Generate blur utility classes for blur values from 1 to 10
+      for (let i = 1; i <= 100; i++) {
+        cloudUtilities[`.cloud-${i}`] = {
           position: 'relative',
           zIndex: '1',
-        },
-        '.cloud::after': {
+        };
+
+        cloudUtilities[`.cloud-${i}::after`] = {
           content: '""',
           position: 'absolute',
           top: '0',
@@ -35,16 +28,37 @@ module.exports = {
           right: '0',
           bottom: '0',
           background: 'inherit',
-          filter: 'blur(8px)',
-          zIndex: '-1', // Set the blur effect
-        },
+          filter: `blur(${i}px)`, // Set the blur effect based on the class
+          zIndex: '-1',
+        };
+      }
+
+      // Add a normal .cloud class with a fixed blur value of 10px
+      cloudUtilities[".cloud"] = {
+        position: 'relative',
+        zIndex: '1',
       };
 
-      // Add the custom utility class for duplicating and blurring "cloud" items to the generated CSS
+      cloudUtilities[".cloud::after"] = {
+        content: '""',
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        right: '0',
+        bottom: '0',
+        background: 'inherit',
+        filter: 'blur(10px)', // Set the fixed blur value
+        zIndex: '-1',
+      };
+
+      cloudUtilities[".animate-cloud::after"] = {
+        animation: 'pulse 2s infinite', // Customize animation duration and other properties as needed
+      };
+
+      // Add the custom utility classes for duplicating and blurring "cloud" items to the generated CSS
       addUtilities(cloudUtilities, ['before']);
     }),
   ],
-  // Include the 'base' section in your tailwind.config.js
   corePlugins: {
     preflight: false,
   },
