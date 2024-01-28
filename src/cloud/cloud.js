@@ -10,16 +10,12 @@ const pulseKeyframes = {
   },
 };
 
-// Include the @keyframes in the cloudUtilities
-cloudUtilities['@keyframes pulse'] = pulseKeyframes;
-
-// Define cloud styles
 cloudUtilities[".cloud"] = {
   position: 'relative',
   zIndex: '1',
 };
 
-cloudUtilities[".cloud::after"] = {
+cloudUtilities[`.cloud::after`] = {
   content: '""',
   position: 'absolute',
   top: '0',
@@ -27,11 +23,40 @@ cloudUtilities[".cloud::after"] = {
   right: '0',
   bottom: '0',
   background: 'inherit',
-  filter: 'blur(10px)', // Set the fixed blur value
+  filter: `blur(10px)`, // Set the dynamic blur value
   zIndex: '-1',
 };
 
-// Apply the pulse animation to ".animate-cloud::after" with cubic-bezier timing function
+
+const specificTargets = [5, 10, 15, 20, 25];
+for (const target of specificTargets) {
+  const className = `.cloud-${target}`;
+
+  // Define styles for the main cloud element
+  cloudUtilities[className] = {
+    position: 'relative',
+    zIndex: '1',
+  };
+
+  // Define styles for the pseudo-element ::after with a dynamic blur value
+  cloudUtilities[`${className}::after`] = {
+    content: '""',
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    right: '0',
+    bottom: '0',
+    background: 'inherit',
+    filter: `blur(${target}px)`, // Set the dynamic blur value
+    zIndex: '-1',
+  };
+}
+
+
+
+// Include the @keyframes in the cloudUtilities
+cloudUtilities['@keyframes pulse'] = pulseKeyframes;
+
 cloudUtilities[".animate-cloud::after"] = {
   animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
 };
