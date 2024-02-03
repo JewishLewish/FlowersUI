@@ -2,6 +2,7 @@
 const plugin = require('tailwindcss/plugin');
 const { cloudUtilities } = require('./src/designs/cloud');
 const { gradientText, animatedGradientKeyframes } = require("./src/designs/gradient_text");
+const { gColors } = require("./src/designs/gradient_colors");
 
 // Define the custom plugin
 module.exports = {
@@ -17,6 +18,7 @@ module.exports = {
     plugin(({ addUtilities }) => {
       addUtilities(cloudUtilities, ['before']);
       addUtilities(gradientText, ['before', 'responsive', 'hover']);
+      addUtilities(gColors, ['before']);
     }),
   ],
   corePlugins: {
