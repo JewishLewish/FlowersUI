@@ -36,6 +36,7 @@ for (const target of specificTargets) {
   cloudUtilities[className] = {
     position: 'relative',
     zIndex: '1',
+    transition: 'filter 0.5s ease-in-out',
   };
 
   // Define styles for the pseudo-element ::after with a dynamic blur value
